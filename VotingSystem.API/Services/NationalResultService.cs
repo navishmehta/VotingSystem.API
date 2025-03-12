@@ -1,7 +1,7 @@
 ﻿using VotingSystem.API.Data;
-using VotingSystem.API.DTOs;
 using VotingSystem.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using VotingSystem.API.DTOs.ResultDtos;
 
 namespace VotingSystem.API.Services
 {

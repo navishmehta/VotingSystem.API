@@ -1,4 +1,4 @@
-﻿namespace VotingSystem.API.DTOs
+﻿namespace VotingSystem.API.DTOs.ResultDtos
 {
     public class NationalResultDto
     {        

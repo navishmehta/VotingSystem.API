@@ -1,4 +1,4 @@
-﻿using VotingSystem.API.DTOs;
+﻿using VotingSystem.API.DTOs.ResultDtos;
 
 namespace VotingSystem.API.Services.Interfaces
 {

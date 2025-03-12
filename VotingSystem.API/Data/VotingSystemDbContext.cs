@@ -18,16 +18,7 @@ namespace VotingSystem.API.Data
         public DbSet<Admin> Admins { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-
-            modelBuilder.Entity<Admin>().HasData(new Admin
-            {
-                Id = 1,
-                Username = "admin",
-                PasswordHash = "admin123"
-            });
-
-
+        {            
             base.OnModelCreating(modelBuilder); // IMPORTANT: Required for Identity
 
             // Enforce unique constraints
