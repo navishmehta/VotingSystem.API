@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -7,7 +6,6 @@ using System.Text;
 using VotingSystem.API.Services.Interfaces;
 using VotingSystem.API.Services;
 using VotingSystem.API.Data;
-using VotingSystem.API.Models;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -54,7 +52,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// 🔹 Configure Authentication & JWT Bearer
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? throw new ArgumentNullException("JWT Key is missing"));
 
@@ -72,7 +69,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
-            RoleClaimType = ClaimTypes.Role  // Ensure the role is recognized!
+            RoleClaimType = ClaimTypes.Role
         };
     });
 
@@ -81,7 +78,6 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// 🔹 Configure Middleware Pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();

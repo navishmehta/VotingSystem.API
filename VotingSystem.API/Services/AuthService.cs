@@ -17,16 +17,15 @@ public class AuthService
         _config = config;
     }
 
-    // Admin Registration (Only One Admin Allowed)
     public string Register(string username, string password)
     {
         if (_context.Admins.Any())
-            throw new Exception("Admin already exists.");
+            throw new InvalidOperationException("Admin already exists.");
 
         var admin = new Admin
         {
             Username = username,
-            PasswordHash = HashPassword(password) // Hash the password correctly
+            PasswordHash = HashPassword(password)
         };
 
         _context.Admins.Add(admin);
@@ -35,7 +34,6 @@ public class AuthService
         return GenerateJwtToken(admin);
     }
 
-    // Admin Login
     public string Login(string username, string password)
     {
         var admin = _context.Admins.FirstOrDefault();
@@ -45,12 +43,11 @@ public class AuthService
         return GenerateJwtToken(admin);
     }
 
-    // Request Password Reset (Generates Reset Token)
     public string RequestPasswordReset()
     {
         var admin = _context.Admins.FirstOrDefault();
         if (admin == null)
-            throw new Exception("Admin not found.");
+            throw new KeyNotFoundException("Admin not found.");
 
         string resetToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
         admin.ResetToken = resetToken;
@@ -58,26 +55,35 @@ public class AuthService
 
         _context.SaveChanges();
 
-        Console.WriteLine($"Password reset token: {resetToken}"); // Simulating email sending
-
         return resetToken;
     }
 
-    // Reset Password Using Reset Token
     public void ResetPassword(string resetToken, string newPassword)
     {
         var admin = _context.Admins.FirstOrDefault();
-        if (admin == null || admin.ResetToken != resetToken || admin.ResetTokenExpiry < DateTime.UtcNow)
-            throw new Exception("Invalid or expired token.");
+        if (admin == null)
+            throw new KeyNotFoundException("Admin not found.");
 
-        admin.PasswordHash = HashPassword(newPassword); // Hash the new password before storing
+        if (admin.ResetToken != resetToken || admin.ResetTokenExpiry < DateTime.UtcNow)
+            throw new UnauthorizedAccessException("Invalid or expired token.");
+
+        admin.PasswordHash = HashPassword(newPassword);
         admin.ResetToken = null;
         admin.ResetTokenExpiry = null;
 
         _context.SaveChanges();
     }
+    public void DeleteAccount()
+    {
+        var admin = _context.Admins.FirstOrDefault();
+        if (admin == null)
+            throw new KeyNotFoundException("Admin not found.");
 
-    // Generate JWT Token
+        _context.Admins.Remove(admin);
+        _context.SaveChanges();
+    }
+
+
     private string GenerateJwtToken(Admin admin)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -99,7 +105,6 @@ public class AuthService
         return tokenHandler.WriteToken(token);
     }
 
-    // Secure Password Hashing with HMAC-SHA256
     private string HashPassword(string password)
     {
         using var sha256 = SHA256.Create();
@@ -108,7 +113,6 @@ public class AuthService
         return Convert.ToBase64String(hash);
     }
 
-    // Verify Password Hash
     private bool VerifyPassword(string password, string storedHash)
     {
         return HashPassword(password) == storedHash;

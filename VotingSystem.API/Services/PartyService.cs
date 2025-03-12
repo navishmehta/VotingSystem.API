@@ -1,9 +1,6 @@
 ﻿using VotingSystem.API.Data;
 using VotingSystem.API.Models;
 using VotingSystem.API.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
 using VotingSystem.API.DTOs.PartyDtos;
 
 namespace VotingSystem.API.Services

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using VotingSystem.API.DTOs.VoteDtos;
 using VotingSystem.API.Services.Interfaces;
 
@@ -17,7 +16,6 @@ namespace VotingSystem.API.Controllers
             _voteService = voteService;
         }
 
-        // Get All Votes
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -32,11 +30,10 @@ namespace VotingSystem.API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500, new { message = "An unexpected error occurred while retrieving votes." });
+                return StatusCode(500, new { message = "An unexpected error occurred while fetching votes." });
             }
         }
 
-        // Get Vote by Id
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -51,11 +48,10 @@ namespace VotingSystem.API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500, new { message = "An unexpected error occurred while retrieving the vote." });
+                return StatusCode(500, new { message = "An unexpected error occurred while fetching the vote." });
             }
         }
 
-        // Create a new Vote
         [HttpPost]
         public IActionResult Create([FromBody] VoteRequestDto votedto)
         {
@@ -81,7 +77,6 @@ namespace VotingSystem.API.Controllers
             }
         }
 
-        // Delete a Vote
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

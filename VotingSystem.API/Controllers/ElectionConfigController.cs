@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VotingSystem.API.DTOs;
 using VotingSystem.API.Services.Interfaces;
@@ -30,7 +29,7 @@ namespace VotingSystem.API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An unexpected error occurred while retrieving the election configuration." });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An unexpected error occurred while fetching the election configuration." });
             }
         }
 

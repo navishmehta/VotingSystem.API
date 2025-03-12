@@ -30,7 +30,7 @@ namespace VotingSystem.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while retrieving voters.", error = ex.Message });
+                return StatusCode(500, new { message = "An error occurred while fetching voters.", error = ex.Message });
             }
         }
 
@@ -48,7 +48,7 @@ namespace VotingSystem.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while retrieving the voter.", error = ex.Message });
+                return StatusCode(500, new { message = "An error occurred while fetching the voter.", error = ex.Message });
             }
         }
 
@@ -69,7 +69,7 @@ namespace VotingSystem.API.Controllers
                 return StatusCode(500, new
                 {
                     message = "An error occurred while creating the voter.",
-                    error = ex.InnerException?.Message ?? ex.Message // Extract and return detailed error message
+                    error = ex.InnerException?.Message ?? ex.Message
                 });
             }
         }

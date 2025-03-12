@@ -49,7 +49,7 @@ namespace VotingSystem.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while retrieving the candidate.", error = ex.Message });
+                return StatusCode(500, new { message = "An error occurred while fetching the candidate.", error = ex.Message });
             }
         }
 

@@ -20,9 +20,13 @@ public class AuthController : ControllerBase
             var token = _authService.Register(request.Username, request.Password);
             return Ok(new { Token = token });
         }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
         catch (Exception ex)
         {
-            return BadRequest(new { Message = ex.Message });
+            return StatusCode(500, new { message = "An error occurred while registering.", Details = ex.Message });
         }
     }
 
@@ -36,7 +40,11 @@ public class AuthController : ControllerBase
         }
         catch (UnauthorizedAccessException ex)
         {
-            return Unauthorized(new { Message = ex.Message });
+            return Unauthorized(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred while logging in.", Details = ex.Message });
         }
     }
 
@@ -48,9 +56,13 @@ public class AuthController : ControllerBase
             var resetToken = _authService.RequestPasswordReset();
             return Ok(new { ResetToken = resetToken });
         }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
         catch (Exception ex)
         {
-            return BadRequest(new { Message = ex.Message });
+            return StatusCode(500, new { message = "An error occurred while requesting password reset.", Details = ex.Message });
         }
     }
 
@@ -62,9 +74,36 @@ public class AuthController : ControllerBase
             _authService.ResetPassword(request.ResetToken, request.NewPassword);
             return Ok(new { Message = "Password reset successful" });
         }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Unauthorized(new { message = ex.Message });
+        }
         catch (Exception ex)
         {
-            return BadRequest(new { Message = ex.Message });
+            return StatusCode(500, new { message = "An error occurred while resetting password.", Details = ex.Message });
         }
     }
+
+    [HttpDelete("delete-account")]
+    public IActionResult DeleteAccount()
+    {
+        try
+        {
+            _authService.DeleteAccount();
+            return Ok(new { Message = "Admin account deleted successfully." });
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred while deleting the account.", Details = ex.Message });
+        }
+    }
+
 }

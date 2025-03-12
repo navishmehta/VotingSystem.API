@@ -17,7 +17,6 @@ namespace VotingSystem.API.Controllers
             _stateService = stateService;
         }
 
-        // Get All
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -36,7 +35,6 @@ namespace VotingSystem.API.Controllers
             }
         }
 
-        // Get by Id
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -79,7 +77,6 @@ namespace VotingSystem.API.Controllers
             }
         }
 
-        // Update
         [Authorize]
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] StateRequestDto statedto)
@@ -108,7 +105,6 @@ namespace VotingSystem.API.Controllers
             }
         }
 
-        // Delete
         [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)

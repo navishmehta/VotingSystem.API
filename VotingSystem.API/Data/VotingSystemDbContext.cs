@@ -19,30 +19,18 @@ namespace VotingSystem.API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {            
-            base.OnModelCreating(modelBuilder); // IMPORTANT: Required for Identity
+            base.OnModelCreating(modelBuilder);
 
-            // Enforce unique constraints
-            modelBuilder.Entity<State>()
-                .HasIndex(s => s.Name)
-                .IsUnique();
+            modelBuilder.Entity<State>().HasIndex(s => s.Name).IsUnique();
 
-            modelBuilder.Entity<Party>()
-               .HasIndex(p => p.Name)
-               .IsUnique();
+            modelBuilder.Entity<Party>().HasIndex(p => p.Name).IsUnique();
 
-            modelBuilder.Entity<Party>()
-               .HasIndex(p => p.Symbol)
-               .IsUnique();
+            modelBuilder.Entity<Party>().HasIndex(p => p.Symbol).IsUnique();
 
-            modelBuilder.Entity<Candidate>()
-              .HasIndex(c => new { c.StateId, c.PartyId })
-              .IsUnique();
+            modelBuilder.Entity<Candidate>().HasIndex(c => new { c.StateId, c.PartyId }).IsUnique();
 
-            modelBuilder.Entity<ElectionConfig>()
-               .HasIndex(e => e.Id)
-               .IsUnique();
+            modelBuilder.Entity<ElectionConfig>().HasIndex(e => e.Id).IsUnique();
 
-            // StateResult relationships
             modelBuilder.Entity<StateResult>()
                 .HasOne(sr => sr.State)
                 .WithMany()
@@ -55,7 +43,6 @@ namespace VotingSystem.API.Data
                 .HasForeignKey(sr => sr.CandidateId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Vote relationships
             modelBuilder.Entity<Vote>()
                 .HasOne(v => v.Voter)
                 .WithMany()
@@ -67,8 +54,6 @@ namespace VotingSystem.API.Data
                 .WithMany()
                 .HasForeignKey(v => v.CandidateId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            
         }
     }
 }

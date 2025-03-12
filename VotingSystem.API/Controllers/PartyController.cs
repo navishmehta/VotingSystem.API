@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VotingSystem.API.Services.Interfaces;
 using VotingSystem.API.DTOs.PartyDtos;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 
 namespace VotingSystem.API.Controllers
@@ -31,7 +30,7 @@ namespace VotingSystem.API.Controllers
             }
             catch
             {
-                return StatusCode(500, new { message = "An internal server error occurred while retrieving parties." });
+                return StatusCode(500, new { message = "An internal server error occurred while fetching parties." });
             }
         }
 
@@ -49,7 +48,7 @@ namespace VotingSystem.API.Controllers
             }
             catch
             {
-                return StatusCode(500, new { message = "An internal server error occurred while retrieving the party." });
+                return StatusCode(500, new { message = "An internal server error occurred while fetching the party." });
             }
         }
 
@@ -112,7 +111,7 @@ namespace VotingSystem.API.Controllers
             try
             {
                 _partyService.Delete(id);
-                return Ok(new { message = "Party deleted successfully." }); // Sending confirmation message
+                return Ok(new { message = "Party deleted successfully." });
             }
             catch (KeyNotFoundException ex)
             {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using VotingSystem.API.Data;
+﻿using VotingSystem.API.Data;
 using VotingSystem.API.DTOs.Voter;
 using VotingSystem.API.DTOs.VoterDtos;
 using VotingSystem.API.Models;
