@@ -44,13 +44,13 @@ namespace VotingSystem.API.Services
             };
         }
 
-        public void Create(VoterRequestDto voterdto)
+        public VoterResponseDto Create(VoterRequestDto voterdto)
         {
             if (voterdto == null || string.IsNullOrWhiteSpace(voterdto.Name))
                 throw new ArgumentException("Voter name is required.");
 
-            if (!voterdto.StateId.HasValue || voterdto.StateId.Value <= 0)
-                throw new ArgumentException("Valid StateId is required.");            
+            if (voterdto.StateId <= 0)
+                throw new ArgumentException("Valid StateId is required.");
 
             var voter = new Voter
             {
@@ -60,9 +60,17 @@ namespace VotingSystem.API.Services
 
             _context.Voters.Add(voter);
             _context.SaveChanges();
+
+            return new VoterResponseDto
+            {
+                Id = voter.Id,
+                Name = voter.Name,
+                StateId = voter.StateId
+            };
         }
 
-        public void Update(int id, VoterRequestDto voterdto)
+
+        public VoterResponseDto Update(int id, VoterRequestDto voterdto)
         {
             var voter = _context.Voters.Find(id)
                 ?? throw new KeyNotFoundException("Voter not found.");
@@ -74,15 +82,29 @@ namespace VotingSystem.API.Services
                 voter.StateId = voterdto.StateId.Value;            
 
             _context.SaveChanges();
+
+            return new VoterResponseDto
+            {
+                Id = voter.Id,
+                Name = voter.Name,
+                StateId = voter.StateId
+            };
         }
 
-        public void Delete(int id)
+        public VoterResponseDto Delete(int id)
         {
             var voter = _context.Voters.Find(id)
                 ?? throw new KeyNotFoundException("Voter not found.");
 
             _context.Voters.Remove(voter);
             _context.SaveChanges();
+
+            return new VoterResponseDto
+            {
+                Id = voter.Id,
+                Name = voter.Name,
+                StateId = voter.StateId
+            };
         }
     }
 }

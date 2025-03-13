@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using VotingSystem.API.Data;
 using VotingSystem.API.Models;
 
@@ -17,10 +18,15 @@ public class AuthService
         _config = config;
     }
 
-    public string Register(string username, string password)
+    public string Register(string username, string password, string confirmPassword)
     {
         if (_context.Admins.Any())
             throw new InvalidOperationException("Admin already exists.");
+
+        if (password != confirmPassword)
+            throw new ArgumentException("Passwords do not match.");
+
+        ValidatePassword(password);
 
         var admin = new Admin
         {
@@ -32,6 +38,24 @@ public class AuthService
         _context.SaveChanges();
 
         return GenerateJwtToken(admin);
+    }
+
+    private void ValidatePassword(string password)
+    {
+        if (password.Length < 8)
+            throw new ArgumentException("Password must be at least 8 characters long.");
+
+        if (!Regex.IsMatch(password, @"[A-Z]"))
+            throw new ArgumentException("Password must contain at least one uppercase letter.");
+
+        if (!Regex.IsMatch(password, @"[a-z]"))
+            throw new ArgumentException("Password must contain at least one lowercase letter.");
+
+        if (!Regex.IsMatch(password, @"\d"))
+            throw new ArgumentException("Password must contain at least one digit.");
+
+        if (!Regex.IsMatch(password, @"[@$!%*?&]"))
+            throw new ArgumentException("Password must contain at least one special character (@, $, !, %, *, ?, &).");
     }
 
     public string Login(string username, string password)

@@ -3,8 +3,10 @@
 namespace VotingSystem.API.DTOs.VoteDtos
 {
     public class VoteRequestDto
-    {               
-        public int VoterId { get; set; }        
-        public int CandidateId { get; set; }
+    {
+        public int VoterId { get; set; }
+        public string CandidateName { get; set; }
+        public string PartyName { get; set; }
     }
+
 }

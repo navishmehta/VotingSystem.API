@@ -47,7 +47,7 @@ namespace VotingSystem.API.Services
             };
         }
 
-        public void Create(CandidateRequestDto candidatedto)
+        public CandidateResponseDto Create(CandidateRequestDto candidatedto)
         {
             if (candidatedto == null || string.IsNullOrWhiteSpace(candidatedto.Name))
             {
@@ -82,9 +82,17 @@ namespace VotingSystem.API.Services
 
             _context.Candidates.Add(candidate);
             _context.SaveChanges();
+
+            return new CandidateResponseDto
+            {
+                Id = candidate.Id,
+                Name = candidate.Name,
+                PartyId = candidate.PartyId,
+                StateId = candidate.StateId
+            };
         }
 
-        public void Update(int id, CandidateRequestDto candidateDto)
+        public CandidateResponseDto Update(int id, CandidateRequestDto candidateDto)
         {
             var candidate = _context.Candidates.Find(id)
                 ?? throw new KeyNotFoundException("Candidate not found.");
@@ -109,16 +117,32 @@ namespace VotingSystem.API.Services
             candidate.StateId = newStateId;
 
             _context.SaveChanges();
+
+            return new CandidateResponseDto
+            {
+                Id = candidate.Id,
+                Name = candidate.Name,
+                PartyId = candidate.PartyId,
+                StateId = candidate.StateId
+            };
         }
 
 
-        public void Delete(int id)
+        public CandidateResponseDto Delete(int id)
         {
             var candidate = _context.Candidates.Find(id)
                 ?? throw new KeyNotFoundException("Candidate not found.");
 
             _context.Candidates.Remove(candidate);
             _context.SaveChanges();
+
+            return new CandidateResponseDto
+            {
+                Id = candidate.Id,
+                Name = candidate.Name,
+                PartyId = candidate.PartyId,
+                StateId = candidate.StateId
+            };
         }
     }
 }

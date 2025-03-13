@@ -63,8 +63,12 @@ namespace VotingSystem.API.Controllers
 
             try
             {
-                _partyService.Create(partydto);
-                return StatusCode(201, new { message = "Party created successfully." });
+                var createdParty = _partyService.Create(partydto);
+                return StatusCode(201, new
+                {
+                    message = "Party created successfully.",
+                    party = createdParty
+                });
             }
             catch (InvalidOperationException ex)
             {
@@ -87,8 +91,12 @@ namespace VotingSystem.API.Controllers
 
             try
             {
-                _partyService.Update(id, partydto);
-                return Ok(new { message = "Party updated successfully." });
+                var updatedParty = _partyService.Update(id, partydto);
+                return Ok(new
+                {
+                    message = "Party updated successfully.",
+                    party = updatedParty
+                });
             }
             catch (KeyNotFoundException ex)
             {
@@ -110,8 +118,12 @@ namespace VotingSystem.API.Controllers
         {
             try
             {
-                _partyService.Delete(id);
-                return Ok(new { message = "Party deleted successfully." });
+                var deletedParty = _partyService.Delete(id);
+                return Ok(new
+                {
+                    message = "Party deleted successfully.",
+                    party = deletedParty
+                });
             }
             catch (KeyNotFoundException ex)
             {

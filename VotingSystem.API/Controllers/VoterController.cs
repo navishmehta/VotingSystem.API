@@ -57,8 +57,12 @@ namespace VotingSystem.API.Controllers
         {
             try
             {
-                _voterService.Create(voterdto);
-                return StatusCode(201, new { message = "Voter created successfully." });
+                var createdVoter = _voterService.Create(voterdto);
+                return StatusCode(201, new
+                {
+                    message = "Voter created successfully.",
+                    voter = createdVoter
+                });
             }
             catch (ArgumentException ex)
             {
@@ -80,8 +84,12 @@ namespace VotingSystem.API.Controllers
         {
             try
             {
-                _voterService.Update(id, voterdto);
-                return Ok(new { message = "Voter updated successfully." });
+                var updatedVoter = _voterService.Update(id, voterdto);
+                return Ok(new
+                {
+                    message = "Voter updated successfully.",
+                    voter = updatedVoter
+                });
             }
             catch (KeyNotFoundException ex)
             {
@@ -103,8 +111,12 @@ namespace VotingSystem.API.Controllers
         {
             try
             {
-                _voterService.Delete(id);
-                return Ok(new { message = "Voter deleted successfully" });
+                var deletedVoter = _voterService.Delete(id);
+                return Ok(new
+                {
+                    message = "Voter deleted successfully.",
+                    voter = deletedVoter
+                });
             }
             catch (KeyNotFoundException ex)
             {

@@ -6,8 +6,8 @@ namespace VotingSystem.API.Services.Interfaces
     {
         IEnumerable<PartyResponseDto> GetAllParties();
         PartyResponseDto GetById(int id);
-        void Create(PartyRequestDto partydto);
-        void Update(int id, PartyRequestDto partydto);
-        void Delete(int id);
+        PartyResponseDto Create(PartyRequestDto partydto);
+        PartyResponseDto Update(int id, PartyRequestDto partydto);
+        PartyResponseDto Delete(int id);
     }
 }

@@ -64,8 +64,12 @@ namespace VotingSystem.API.Controllers
 
             try
             {
-                _stateService.Create(statedto);
-                return StatusCode(201, new { message = "State created successfully." });
+                var createdState = _stateService.Create(statedto); // Ensure this returns the full created state
+                return StatusCode(201, new
+                {
+                    message = "State created successfully.",
+                    state = createdState
+                });
             }
             catch (InvalidOperationException ex)
             {
@@ -76,6 +80,7 @@ namespace VotingSystem.API.Controllers
                 return StatusCode(500, new { message = "An internal server error occurred." });
             }
         }
+
 
         [Authorize]
         [HttpPut("{id}")]
@@ -88,8 +93,12 @@ namespace VotingSystem.API.Controllers
 
             try
             {
-                _stateService.Update(id, statedto);
-                return Ok(new { message = "State updated successfully." });
+                var updatedState = _stateService.Update(id, statedto);
+                return Ok(new
+                {
+                    message = "State updated successfully.",
+                    state = updatedState
+                });
             }
             catch (KeyNotFoundException ex)
             {
@@ -111,8 +120,12 @@ namespace VotingSystem.API.Controllers
         {
             try
             {
-                _stateService.Delete(id);
-                return Ok(new { message = "State deleted successfully" });
+                var deletedState = _stateService.Delete(id);
+                return Ok(new
+                {
+                    message = "State deleted successfully.",
+                    state = deletedState
+                });
             }
             catch (KeyNotFoundException ex)
             {

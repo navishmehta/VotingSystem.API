@@ -17,7 +17,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            var token = _authService.Register(request.Username, request.Password);
+            var token = _authService.Register(request.Username, request.Password, request.ConfirmPassword);
             return Ok(new { Token = token });
         }
         catch (InvalidOperationException ex)

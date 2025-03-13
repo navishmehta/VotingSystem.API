@@ -6,8 +6,8 @@ namespace VotingSystem.API.Services.Interfaces
     {
         IEnumerable<CandidateResponseDto> GetAll();
         CandidateResponseDto GetById(int id);
-        void Create(CandidateRequestDto candidateDto);
-        void Update(int id, CandidateRequestDto candidateDto);
-        void Delete(int id);
+        CandidateResponseDto Create(CandidateRequestDto candidateDto);
+        CandidateResponseDto Update(int id, CandidateRequestDto candidateDto);
+        CandidateResponseDto Delete(int id);
     }
 }

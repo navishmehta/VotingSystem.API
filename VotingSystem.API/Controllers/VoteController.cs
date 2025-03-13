@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using VotingSystem.API.DTOs.VoteDtos;
 using VotingSystem.API.Services.Interfaces;
@@ -16,6 +17,7 @@ namespace VotingSystem.API.Controllers
             _voteService = voteService;
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -60,8 +62,13 @@ namespace VotingSystem.API.Controllers
 
             try
             {
-                _voteService.Create(votedto);
-                return StatusCode(201, new { message = "Vote recorded successfully." });
+                var createdVote = _voteService.Create(votedto);
+                return StatusCode(201, new
+                {
+                    message = "Vote recorded successfully.",
+                    vote = createdVote
+                });
+
             }
             catch (KeyNotFoundException ex)
             {
@@ -77,13 +84,18 @@ namespace VotingSystem.API.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             try
             {
-                _voteService.Delete(id);
-                return Ok(new { message = "Vote deleted successfully" });
+                var deletedVote = _voteService.Delete(id);
+                return Ok(new
+                {
+                    message = "Vote deleted successfully.",
+                    vote = deletedVote
+                });
             }
             catch (KeyNotFoundException ex)
             {

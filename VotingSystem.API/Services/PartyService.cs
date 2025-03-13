@@ -48,7 +48,7 @@ namespace VotingSystem.API.Services
             };
         }
 
-        public void Create(PartyRequestDto partydto)
+        public PartyResponseDto Create(PartyRequestDto partydto)
         {
             if (partydto == null || string.IsNullOrWhiteSpace(partydto.Name) || string.IsNullOrWhiteSpace(partydto.Symbol))
             {
@@ -73,9 +73,15 @@ namespace VotingSystem.API.Services
 
             _context.Parties.Add(party);
             _context.SaveChanges();
+
+            return new PartyResponseDto
+            {
+                Id = party.Id,
+                Name = party.Name
+            };
         }
 
-        public void Update(int id, PartyRequestDto partydto)
+        public PartyResponseDto Update(int id, PartyRequestDto partydto)
         {
             var party = _context.Parties.Find(id);
             if (party == null)
@@ -102,20 +108,27 @@ namespace VotingSystem.API.Services
             }
 
             _context.SaveChanges();
+
+            return new PartyResponseDto
+            {
+                Id = party.Id,
+                Name = party.Name
+            };
         }
 
-
-
-        public void Delete(int id)
+        public PartyResponseDto Delete(int id)
         {
-            var party = _context.Parties.Find(id);
-            if (party == null)
-            {
-                throw new KeyNotFoundException("Party not found.");
-            }
+            var party = _context.Parties.Find(id)
+                ?? throw new KeyNotFoundException("Party not found.");
 
             _context.Parties.Remove(party);
             _context.SaveChanges();
+
+            return new PartyResponseDto
+            {
+                Id = party.Id,
+                Name = party.Name
+            };
         }
     }
 }

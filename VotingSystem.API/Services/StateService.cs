@@ -45,7 +45,7 @@ namespace VotingSystem.API.Services
             };
         }
 
-        public void Create(StateRequestDto statedto)
+        public StateResponseDto Create(StateRequestDto statedto)
         {
             if (statedto == null || string.IsNullOrWhiteSpace(statedto.Name))
             {
@@ -60,9 +60,15 @@ namespace VotingSystem.API.Services
             var state = new State { Name = statedto.Name.Trim() };
             _context.States.Add(state);
             _context.SaveChanges();
+
+            return new StateResponseDto
+            {
+                Id = state.Id,
+                Name = state.Name
+            };
         }
 
-        public void Update(int id, StateRequestDto statedto)
+        public StateResponseDto Update(int id, StateRequestDto statedto)
         {
             var state = _context.States.Find(id);
             if (state == null)
@@ -77,9 +83,15 @@ namespace VotingSystem.API.Services
 
             state.Name = statedto.Name.Trim();
             _context.SaveChanges();
+
+            return new StateResponseDto
+            {
+                Id = state.Id,
+                Name = state.Name
+            };
         }
 
-        public void Delete(int id)
+        public StateResponseDto Delete(int id)
         {
             var state = _context.States.Find(id);
             if (state == null)
@@ -89,6 +101,12 @@ namespace VotingSystem.API.Services
 
             _context.States.Remove(state);
             _context.SaveChanges();
+
+            return new StateResponseDto
+            {
+                Id = state.Id,
+                Name = state.Name
+            };
         }
     }
 }
